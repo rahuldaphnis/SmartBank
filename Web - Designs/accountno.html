@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Account search</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+    <style>
+body  {
+    background-image: url("th.jpg") ;
+    background-repeat: no-repeat;
+    background-size: 100% 500%;
+}
+</style>
+   
+
+<body >
+
+<div class="container">
+  <h2 style="color: gold;">Account Search </h2>
+
+  <form action="/action_page.php">
+    <div class="form-group">
+      <label for="acno"  style="color:white;">Account no:</label>
+      <input type="Number" style="margin-right: 1em; width: 50%; float: left;" class="form-control" id="acno" placeholder="Enter Account No" name="acno">
+      <button type="submit" style="float: left;" class="btn btn-primary">Search</button>
+    </div>
+    
+   
+  </form>
+
+  <div class="table-stripped">          
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Sno</th>
+        <th>Name</th>
+        <th>Account Number</th>
+        <th>Phone no</th>
+        <th>Adhaar card</th>
+        <th>Pan card</th>
+        <th>status</th>
+      </tr>
+    </thead>
+    <tbody>
+    <br />
+      <tr>
+        <td>1</td>
+        <td>Anna</td>
+        <td>123456789012121</td>
+        <td>9968997654</td>
+        <td><img style="width: 70%;" src="aadhar.jpg"></td>
+        <td><img style="width: 50%;" src="pan.jpg"></td>
+        <td><button class="btn btn-success">Accepted</button></td>
+      </tr>
+
+</div>
+
+
+</body>
+</html>
