@@ -21,6 +21,7 @@
             android:orientation="horizontal">
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_marginRight="5dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5">
                 <Button
@@ -35,6 +36,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
                 android:layout_weight="0.5">
                 <Button
                     android:id="@+id/documents"
@@ -48,11 +50,12 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
             android:layout_height="match_parent"
             android:layout_weight="0.5">
             <Button
                 android:id="@+id/removeaccount"
-                android:hint="Remove Account"
+                android:text="Remove Account"
                 android:textSize="30sp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

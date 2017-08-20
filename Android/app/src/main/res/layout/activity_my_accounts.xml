@@ -53,4 +53,11 @@
         </RelativeLayout>
 
     </RelativeLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add new account"
+        android:layout_marginTop="450dp"
+        android:background="@color/com_facebook_button_background_color_selected"
+        android:textColor="@color/cardview_light_background" />
 </RelativeLayout>

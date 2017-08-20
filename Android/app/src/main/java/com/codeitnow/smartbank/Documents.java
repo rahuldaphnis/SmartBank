@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -30,6 +31,7 @@ public class Documents extends AppCompatActivity {
 
     String type="0";
     SharedPreferences sharedPreferences;
+    TextView empty;
     ImageButton newaadhar, newpan, oldaadhar, oldpan;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,7 @@ public class Documents extends AppCompatActivity {
     }
 
     public void initialize() {
+        empty = (TextView) findViewById(R.id.empty);
         newaadhar = (ImageButton) findViewById(R.id.newaadhar);
         oldaadhar = (ImageButton) findViewById(R.id.oldaadhar);
         newpan = (ImageButton) findViewById(R.id.newpan);
@@ -62,7 +65,7 @@ public class Documents extends AppCompatActivity {
         oldaadhar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-/*                final CircularProgressView progressView = (CircularProgressView) findViewById(R.id.progress_view);
+                final CircularProgressView progressView = (CircularProgressView) findViewById(R.id.progress_view);
                 progressView.startAnimation();
                 HashMap<String, String> params = new HashMap<String, String>();
                 String url = Config.coreUrl+"Bank/addAccount";
@@ -73,34 +76,14 @@ public class Documents extends AppCompatActivity {
                         JSONObject object,object1 = null;
                         try {
                             object = new JSONObject(response);
-                            object1 = (JSONObject) object.get("data");
-                            ownername.setText(object1.getString("ownername"));
-                            accountstatus.setText(object1.getString("accountstatus"));
-                            phone.setText(object1.getString("phone"));
-                            accountnumber.setText(object1.getString("accountnumber"));
-                            accountbalance.setText(object1.getString("balance"));
-                            accountcreated.setText(object1.getString("createddate"));
-                            array = new JSONArray(object1.getString("passbook"));
                             progressView.stopAnimation();
                             empty.setVisibility(View.INVISIBLE);
                             progressView.setVisibility(View.INVISIBLE);
-                            Gson gson = new Gson();
-                            String p = "";
-                            for (int i = 0; i < array.length(); i++) {
-                                PassbookObject passBook = gson.fromJson(array.getJSONObject(i).toString(), PassbookObject.class);
-                                p = p + passBook.date + passBook.particulars + passBook.debit + passBook.credit + passBook.balance + "\n";
-                                //userAccountArrayList.add(userAccount);
-                                //    Log.d("heya",reportedchildslist.get(i).age);
-                                //    Log.d("hello",array.getJSONObject(i).toString());
-                                //    Log.d("shared",sharedPreferences.getString("username",null));
+                            if(object.getString("success").equals("1")) {
+                                Toast.makeText(Documents.this, "Document Added Successfully", Toast.LENGTH_SHORT).show();
                             }
-                            passbookdata.setText(p);
-                            if (array.length() == 0) {
-                                empty.setVisibility(View.VISIBLE);
-                                empty.setText("No results found!");
-                            } else {
-                                //userAccountAdapter.notifyDataSetChanged();
-                                //reportedchildsview.setAdapter(reportedChildAdapter);
+                            else {
+                                Toast.makeText(Documents.this, "Document Not Added", Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -112,7 +95,7 @@ public class Documents extends AppCompatActivity {
                         //Log.d("err",String.valueOf(error));
                         progressView.stopAnimation();
                         progressView.setVisibility(View.INVISIBLE);
-                        Toast.makeText(PassBook.this, "Error please check your network connection and try again later", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Documents.this, "Error please check your network connection and try again later", Toast.LENGTH_SHORT).show();
                     }
                 }) {
                     @Override
@@ -121,15 +104,15 @@ public class Documents extends AppCompatActivity {
                         params.put("userid", sharedPreferences.getString("userid",null));
                         params.put("bankid", sharedPreferences.getString("bankid",null));
                         params.put("accountnumber", sharedPreferences.getString("accountnumber",null));
-                        params.put("ifsccode", sharedPreferences.getString("ifsccode",null));
-                        params.put("phone", sharedPreferences.getString("phone",null));
+                        params.put("type", "1");
+                        params.put("documentid", "1");
                         return params;
 //                        return super.getParams();
                     }
                 };
                 VolleySingleton.getInstance().getRequestQueue().add(stringRequest);
 
-*/          }
+          }
         });
 
         oldpan.setOnClickListener(new View.OnClickListener() {

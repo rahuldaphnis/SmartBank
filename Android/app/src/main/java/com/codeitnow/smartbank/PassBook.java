@@ -63,12 +63,12 @@ public class PassBook extends AppCompatActivity {
                 try {
                     object = new JSONObject(response);
                     object1 = (JSONObject) object.get("data");
-                    ownername.setText(object1.getString("ownername"));
-                    accountstatus.setText(object1.getString("accountstatus"));
-                    phone.setText(object1.getString("phone"));
-                    accountnumber.setText(object1.getString("accountnumber"));
-                    accountbalance.setText(object1.getString("balance"));
-                    accountcreated.setText(object1.getString("createddate"));
+                    ownername.setText("Name = "+object1.getString("ownername"));
+                    accountstatus.setText("Account Status = "+object1.getString("accountstatus"));
+                    phone.setText("Phone = "+object1.getString("phone"));
+                    accountnumber.setText("Account Number = "+object1.getString("accountnumber"));
+                    accountbalance.setText("Balance = "+object1.getString("balance"));
+                    accountcreated.setText("Created Date = "+object1.getString("createddate"));
                     array = new JSONArray(object1.getString("passbook"));
                     progressView.stopAnimation();
                     empty.setVisibility(View.INVISIBLE);
@@ -77,7 +77,7 @@ public class PassBook extends AppCompatActivity {
                     String p = "";
                     for (int i = 0; i < array.length(); i++) {
                         PassbookObject passBook = gson.fromJson(array.getJSONObject(i).toString(), PassbookObject.class);
-                        p = p + passBook.date + passBook.particulars + passBook.debit + passBook.credit + passBook.balance + "\n";
+                        p = p + passBook.date +"||"+ passBook.particulars +"||"+ passBook.debit +"||"+ passBook.credit +"||"+ passBook.balance + "\n";
                         //userAccountArrayList.add(userAccount);
                         //    Log.d("heya",reportedchildslist.get(i).age);
                         //    Log.d("hello",array.getJSONObject(i).toString());
