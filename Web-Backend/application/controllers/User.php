@@ -49,6 +49,7 @@ class User extends CI_Controller {
 
 		$data['name'] = $this->input->post('name');
 		$data['email'] = $this->input->post('email');
+		$data['address'] = $this->input->post('address');
 		$phone = $this->input->post('phone');
 		$records = $this->usermodel->getUser($phone);
 		$result = array();
@@ -58,14 +59,14 @@ class User extends CI_Controller {
 			$query = $this->usermodel->updateProfile($r->userid,$data);
 			if($query) {
 				$result['success'] = '1';
-				$result['userid'] = $r->userid;
 			}
 			else {
 				$result['success'] = '0';
-				$result['userid'] = NULL;
 			}
 		}
-
+		else {
+				$result['success'] = '0';
+		}
 		echo json_encode($result);
 	}
 
@@ -79,8 +80,12 @@ class User extends CI_Controller {
 			}
 			$result['success'] = '1';
 			$result['data'] = $r;
-			echo json_encode($result);
 		}
+		else {
+			$result['success'] = '0';
+			$result['data'] = NULL;			
+		}
+		echo json_encode($result);
 	}
 }
 

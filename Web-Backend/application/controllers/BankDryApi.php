@@ -13,7 +13,7 @@ class BankDryApi extends CI_Controller {
 
 			$data['ownername'] = 'Rahul Malhotra';
 			$data['accountstatus'] = 'active';
-			$data['phone'] = '9555705671';
+			$data['phone'] = '+919555705671';
 			$data['accountnumber'] = '1234567890';
 			$data['balance'] = '20000';
 			$data['currency'] = 'IND';
@@ -65,7 +65,6 @@ class BankDryApi extends CI_Controller {
 			
 			array_push($passbook, $passbookdata5);
 
-			$data['success'] = '1';
 			$data['passbook'] = $passbook;
 		}
 

@@ -78,38 +78,46 @@ class Bank extends CI_Controller {
 
 		$account = json_decode($curl_response);
 
-		$type = $account->accounttype;
+		if($account!=NULL) {
 
-		$result = array();
-		if($phone==$account->phone) {
-			$result['success'] = '1';
-			$result['data'] = $account;
+			$type = $account->accounttype;
+
+			$result = array();
+			if($phone==$account->phone) {
+				$result['success'] = '1';
+				$result['data'] = $account;
+			}
+			else {
+				$result['success'] = '0';
+				$result['data'] = NULL;
+			}
+
+			$accountdata['number'] = $accountnumber;
+			$accountdata['type'] = $type;
+			$accountdata['ifsccode'] = $ifsccode;
+			$accountdata['status'] = 1;
+			$accountdata['userid'] = $userid;
+			$accountdata['bankid'] = $bankid;
+
+			$query = $this->bankmodel->addUserAccount($accountdata);
+
+			if($query) {
+				$result['accountsaved'] = '1';
+			}
+			else {
+				$result['accountsaved'] = '0';
+			}
 		}
 		else {
 			$result['success'] = '0';
-			$result['data'] = NULL;
-		}
-
-		$accountdata['number'] = $accountnumber;
-		$accountdata['type'] = $type;
-		$accountdata['ifsccode'] = $ifsccode;
-		$accountdata['status'] = 1;
-		$accountdata['userid'] = $userid;
-		$accountdata['bankid'] = $bankid;
-
-		$query = $this->bankmodel->addUserAccount($accountdata);
-
-		if($query) {
-			$result['accountsaved'] = '1';
-		}
-		else {
+			$result['data'] = NULL;			
 			$result['accountsaved'] = '0';
 		}
 
 		echo json_encode($result);
 	}
 
-	//Get details of documents of user's documents
+	//Get details of user documents
 	public function getUserDocuments() {
 
 		$userid = $this->input->post('userid');
