@@ -22,8 +22,8 @@
 	<div class="col-sm-4"></div>
 	<div class="col-sm-4">
 		<nav class="nav nav-tabs" id="myTab" role="tablist">
-		  <a class="nav-item nav-link active" style="color:black;" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab">Login</a>
-		  <a class="nav-item nav-link" style="color:black;" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab">Sign Up</a>
+		  <a class="nav-item nav-link active" style="color:black; width: 50%; text-align: center;" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab">Login</a>
+		  <a class="nav-item nav-link" style="color:black; width: 50%; text-align: center;" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab">Sign Up</a>
 		</nav>
   		<br />
 		<div class="tab-content" id="nav-tabContent">
@@ -31,45 +31,50 @@
 			<form>
 			  <div class="input-group">
 			    <span class="input-group-addon"><i class="glyphicon glyphicon-user">@</i></span>
-			    <input id="email" type="text" class="form-control" name="email" placeholder="Email">
+			    <input id="email" type="email" required="true" class="form-control" name="email" placeholder="Email">
 			  </div>
 			  <br />
 			  <div class="input-group">
 			    <span class="input-group-addon"><i class="glyphicon glyphicon-lock">#</i></span>
-			    <input id="password" type="password" class="form-control" name="password" placeholder="Password">
+			    <input id="password" type="password" required="true" class="form-control" name="password" placeholder="Password">
 			  </div>
 			  <br />
-			  <button type="button" style="width: 100%; cursor: pointer; font-size: 1.1em; font-weight: bold;" class="btn btn-success">Login</button>
+			  <input type="submit" style="width: 100%; cursor: pointer; font-size: 1.1em; font-weight: bold;" class="btn btn-success" value="Login" />
 			</form>				  	
 		  </div>
 		  <div class="tab-pane fade" id="nav-profile" role="tabpanel">  
 		  <form>
 			  <div class="input-group">
 			    <span class="input-group-addon"><i class="glyphicon glyphicon-user">Name</i></span>
-			    <input id="email" type="text" class="form-control" name="name" placeholder="Name of Bank with Branch">
-			  </div>
-			  <br />
-			  <div class="input-group">
-			    <span class="input-group-addon"><i class="glyphicon glyphicon-user">@</i></span>
-			    <input id="email" type="text" class="form-control" name="email" placeholder="Email Id of Bank">
+			    <input id="name" type="text" required="true" class="form-control" name="name" placeholder="Name of Bank with Branch">
 			  </div>
 			  <br />
 			  <div class="input-group">
 			    <span class="input-group-addon"><i class="glyphicon glyphicon-user">Phone</i></span>
-			    <input id="email" type="text" class="form-control" name="phone" placeholder="Phone Number of Bank">
-			  </div>
-			  <br />
-			  <div class="input-group">
-			    <span class="input-group-addon"><i class="glyphicon glyphicon-user">IFSC Code</i></span>
-			    <input id="email" type="text" class="form-control" name="ifsccode" placeholder="IFSC Code of Bank">
+			    <input id="email" type="number" required="true" class="form-control" name="phone" placeholder="Phone Number of Bank">
 			  </div>
 			  <br />
 			  <div class="input-group">
 			    <span class="input-group-addon"><i class="glyphicon glyphicon-lock">#</i></span>
-			    <input id="password" type="password" class="form-control" name="password" placeholder="Password">
+			    <input id="password" type="password" required="true" class="form-control" name="password" placeholder="Password">
 			  </div>
 			  <br />
-			  <button type="button" style="width: 100%; cursor: pointer; font-size: 1.1em; font-weight: bold;" class="btn btn-success">Sign Up</button>
+			  <div class="input-group">
+			    <span class="input-group-addon"><i class="glyphicon glyphicon-user">IFSC Code</i></span>
+			    <input id="ifsccode" type="text" required="true" class="form-control" name="ifsccode" placeholder="IFSC Code of Bank">
+			  </div>
+			  <br />
+			  <div class="input-group">
+			    <span class="input-group-addon"><i class="glyphicon glyphicon-user">%</i></span>
+			    <input id="threshold" type="number" required="true" class="form-control" name="threshold" placeholder="Threshold percentage to auto verify documents">
+			  </div>
+			  <br />
+			  <div class="input-group">
+			    <span class="input-group-addon"><i class="glyphicon glyphicon-user">@</i></span>
+			    <input id="endpoint" type="text" required="true" class="form-control" name="endpoint" placeholder="API Endpoint of Bank">
+			  </div>
+			  <br />
+			  <input type="submit" style="width: 100%; cursor: pointer; font-size: 1.1em; font-weight: bold;" class="btn btn-success" value="Sign Up" />
 			</form>				  			  	
 		  </div>
 		</div>
