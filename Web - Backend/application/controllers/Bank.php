@@ -135,6 +135,24 @@ class Bank extends CI_Controller {
 		echo json_encode($result);
 	}
 
+	//Get details of user documents of a particular bank
+	public function getUserBankDocuments() {
+
+		$userid = $this->input->post('userid');
+		$bankid = $this->input->post('bankid');
+		$records = $this->bankmodel->getUserBankDocuments($userid,$bankid);
+		$result = array();
+		if($records!=NULL) {
+			$result['success'] = '1';
+			$result['data'] = $records;
+		}
+		else {
+			$result['success'] = '0';
+			$result['data'] = NULL;
+		}
+		echo json_encode($result);
+	}
+
 	//Add existing user document for a different bank account
 	public function addExistingDocument() {
 
@@ -170,6 +188,7 @@ class Bank extends CI_Controller {
 			curl_close($curl);
 
 			$ibmresponse = json_decode($curl_response);
+			//echo $curl_response;
 			$data = array();
 			$data = $ibmresponse->images;
 			$datap = $data['0'];
@@ -189,16 +208,22 @@ class Bank extends CI_Controller {
 			$query = NULL;
 			if($type==1) {
 				if($originalaadharscore>$threshold) {
-					//echo 'blabla';
-					$document['status'] = 1;
+//					echo 'blabla';
+					$document['status'] = '1';
 					$query = $this->bankmodel->addUserDocument($document);
+				}
+				else {
+					$document['status'] = '0';
 				}
 			}
 			else if($type==2) {
 				if($originalpanscore>$threshold) {
-					$document['status'] = 1;
+					$document['status'] = '1';
 					$query = $this->bankmodel->addUserDocument($document);
 				}				
+				else {
+					$document['status'] = '0';
+				}
 			}
 			if($query!=NULL) {
 				$result['success'] = '1';
@@ -221,17 +246,18 @@ class Bank extends CI_Controller {
 		$bankid = $this->input->post('bankid');
 		$type = $this->input->post('type');
 		$accountnumber = $this->input->post('accountnumber');
-
 		$image = $this->input->post('image');
 		$decodedimage = base64_decode($image);
+		$document['type'] = $type;
+
 		if($image!=NULL) {
 			if($document['type']==1) {
-				$p = file_put_contents('uploads/aadharcards/bankid'.($bankid).'userid'.($userid).'jpg', $decodedimage);
-				$imgurl = base_url().'uploads/aadharcards/bankid'.($bankid).'userid'.($userid).'jpg';
+				$p = file_put_contents('uploads/aadharcards/bankid'.($bankid).'userid'.($userid).'.jpg', $decodedimage);
+				$imgurl = base_url().'uploads/aadharcards/bankid'.($bankid).'userid'.($userid).'.jpg';
 			}
 			else if($document['type']==2) {
-				$p = file_put_contents('uploads/pancards/bankid'.($bankid).'userid'.($userid).'jpg', $decodedimage);
-				$imgurl = base_url().'uploads/pancards/bankid'.($bankid).'userid'.($userid).'jpg';
+				$p = file_put_contents('uploads/pancards/bankid'.($bankid).'userid'.($userid).'.jpg', $decodedimage);
+				$imgurl = base_url().'uploads/pancards/bankid'.($bankid).'userid'.($userid).'.jpg';
 			}
 			else {
 				$p=NULL;
@@ -243,32 +269,70 @@ class Bank extends CI_Controller {
 
 		$document['userid'] = $userid;
 		$document['bankid'] = $bankid;
-		$document['type'] = $type;
 		$document['accountnumber'] = $accountnumber;
 		$document['image'] = $imgurl;
 
 		$r = $this->bankmodel->getBankThreshold($bankid);
 
-		//		if($r->threshold>)
-
 		//Call IBM Watson Api and check Threshold
-
-
-
-		//$document['status'] = Set  according to threshold of bank
-
-		if($p!=NULL) {
-			$query = $this->bankmodel->addUserDocument($document);
+		$url = 'https://gateway-a.watsonplatform.net/visual-recognition/api/v3/classify?api_key=5ecfc6103bc1992a17ab5492dc12caf7d18c515e&version=2016-05-20&url='.$imgurl.'&owners=IBM,Me&classifier_ids=IdAuthentication_658689001&threshold=0.0';
+		$curl = curl_init($url);
+		curl_setopt($curl,CURLOPT_RETURNTRANSFER,true);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+		$curl_response = curl_exec($curl);
+		if($curl_response==false) {
+			$info = curl_error($curl);
+			curl_close($curl);
+			die('Error occured during curl execution. Additional info - '.var_export($info));
 		}
-		else {
-			$query = NULL;
+		curl_close($curl);
+		$ibmresponse = json_decode($curl_response);
+		//echo $curl_response;
+		$data = array();
+		$data = $ibmresponse->images;
+		$datap = $data['0'];
+		$datak =$datap->classifiers;
+		$datao = $datak['0'];
+		$datat = $datao->classes;
+		$fakeaadhar = $datat['0'];
+		$fakepan = $datat['1'];
+		$originalaadhar = $datat['2'];
+		$originalpan = $datat['3'];
+		$fakeaadharscore = $fakeaadhar->score;
+		$fakepanscore = $fakepan->score;
+		$originalaadharscore = $originalaadhar->score;
+		$originalpanscore = $originalpan->score;
+		$threshold = ($r->threshold)/100;
+		//echo 'p'.$originalaadharscore.'k'.$threshold;
+		$query = NULL;
+		if($type==1) {
+			if($originalaadharscore>$threshold) {
+//				echo 'blabla';
+				$document['status'] = '1';
+				$query = $this->bankmodel->addUserDocument($document);
+			}
+			else {
+				$document['status'] = '0';
+				$query = $this->bankmodel->addUserDocument($document);				
+			}
 		}
-
+		else if($type==2) {
+			if($originalpanscore>$threshold) {
+				$document['status'] = '1';
+				$query = $this->bankmodel->addUserDocument($document);
+			}				
+			else {
+				$document['status'] = '0';
+				$query = $this->bankmodel->addUserDocument($document);				
+			}
+		}
 		if($query!=NULL) {
 			$result['success'] = '1';
+			$result['status'] = $document['status'];
 		}
 		else {
 			$result['success'] = '0';
+			$result['status'] = $document['status'];
 		}
 
 		echo json_encode($result);

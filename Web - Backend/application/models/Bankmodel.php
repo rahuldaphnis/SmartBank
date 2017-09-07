@@ -61,11 +61,6 @@ class Bankmodel extends CI_Model {
 		}
 	}
 
-	/*  
-		to get the user documents - Bank Id will be verified at frontend part so
-		that same function can be used to give suggestion to user to use existing documents
-		for verification in case of submitting documents to any other bank
-	*/
 	function getUserDocuments($userid) {
 
 		$this->db->where('userid',$userid);
@@ -74,11 +69,38 @@ class Bankmodel extends CI_Model {
 		return $records;
 	}
 
+	function getUserBankDocuments($userid,$bankid) {
+
+		$this->db->where('userid',$userid);
+		$this->db->where('bankid',$bankid);
+		$query = $this->db->get('document');
+		$records = $query->result();
+		return $records;
+	}
+
 	//Add a new entry in documents table for recently uploaded document
 	function addUserDocument($document) {
 
-		$query = $this->db->insert('document',$document);
-		return $query;
+		$this->db->where('userid',$document['userid']);
+		$this->db->where('bankid',$document['bankid']);
+		$query = $this->db->get('document');
+		$records = $query->result();
+		$result = array();
+		if($records!=NULL) {
+			foreach ($records as $r) {
+			}
+			$query1 = true;
+			if($r->status==0) {
+				$this->db->where('userid',$document['userid']);
+				$this->db->where('bankid',$document['bankid']);
+				$query1 = $this->db->update('document',$document);
+			}
+			return $query1;
+		}
+		else {
+			$query = $this->db->insert('document',$document);
+			return $query;
+		}
 
 	}
 
