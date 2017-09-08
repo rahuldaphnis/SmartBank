@@ -1,8 +1,13 @@
 package com.codeitnow.smartbank;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.provider.DocumentsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -14,9 +19,15 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.codeitnow.smartbank.SmartBankAdapters.DocumentAdapter;
 import com.codeitnow.smartbank.SmartBankObjects.PassbookObject;
 import com.codeitnow.smartbank.SmartBankUtilities.Config;
 import com.codeitnow.smartbank.SmartBankUtilities.VolleySingleton;
+import com.codeitnow.smartbank.data.model.GetBanksData;
+import com.codeitnow.smartbank.data.model.GetDocumentsData;
+import com.codeitnow.smartbank.data.model.GetUserBankDocumentPost;
+import com.codeitnow.smartbank.data.remote.APIService;
+import com.codeitnow.smartbank.data.remote.ApiUtils;
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
 import com.google.gson.Gson;
 
@@ -24,15 +35,20 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class Documents extends AppCompatActivity {
 
-    String type="0";
+    private RecyclerView myDocumentsList;
+    DocumentAdapter documentAdapter;
+    APIService apiService;
     SharedPreferences sharedPreferences;
-    TextView empty;
-    ImageButton newaadhar, newpan, oldaadhar, oldpan;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,87 +56,47 @@ public class Documents extends AppCompatActivity {
         initialize();
     }
 
+    public void addDocument(View view) {
+        this.finish();
+        startActivity(new Intent(Documents.this,AddDocument.class));
+    }
+
+    public void chooseDocument(View view) {
+        this.finish();
+        startActivity(new Intent(Documents.this,ChooseDocument.class));
+    }
+
     public void initialize() {
-        empty = (TextView) findViewById(R.id.empty);
-        newaadhar = (ImageButton) findViewById(R.id.newaadhar);
-        oldaadhar = (ImageButton) findViewById(R.id.oldaadhar);
-        newpan = (ImageButton) findViewById(R.id.newpan);
-        oldpan = (ImageButton) findViewById(R.id.oldpan);
+
+        myDocumentsList = (RecyclerView) findViewById(R.id.mydocumentslist);
+        myDocumentsList.setHasFixedSize(true);
+        myDocumentsList.setLayoutManager(new LinearLayoutManager(this));
+        apiService = ApiUtils.getAPIService();
         sharedPreferences = getSharedPreferences("user",MODE_PRIVATE);
-
-        newaadhar.setOnClickListener(new View.OnClickListener() {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.show();
+        apiService.getUserBankDocuments(
+                sharedPreferences.getString("userid",null),
+                sharedPreferences.getString("bankid",null)
+        ).enqueue(new Callback<GetUserBankDocumentPost>() {
             @Override
-            public void onClick(View view) {
+            public void onResponse(Call<GetUserBankDocumentPost> call, retrofit2.Response<GetUserBankDocumentPost> response) {
+                String success = response.body().getSuccess();
+                if(success.equals("1")) {
+                    List<GetDocumentsData> getDocumentsDataList = response.body().getData();
+                    documentAdapter = new DocumentAdapter(Documents.this,getDocumentsDataList);
+                    myDocumentsList.setAdapter(documentAdapter);
+                    progressDialog.dismiss();
+                }
+                else {
+                    Toast.makeText(Documents.this, "No Document Found", Toast.LENGTH_SHORT).show();
+                }
+            }
 
+            @Override
+            public void onFailure(Call<GetUserBankDocumentPost> call, Throwable t) {
+                Toast.makeText(Documents.this, "Please check your network connection and try again", Toast.LENGTH_SHORT).show();
             }
         });
-
-        newpan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-        oldaadhar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final CircularProgressView progressView = (CircularProgressView) findViewById(R.id.progress_view);
-                progressView.startAnimation();
-                HashMap<String, String> params = new HashMap<String, String>();
-                String url = Config.coreUrl+"Bank/addAccount";
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        JSONArray array;
-                        JSONObject object,object1 = null;
-                        try {
-                            object = new JSONObject(response);
-                            progressView.stopAnimation();
-                            empty.setVisibility(View.INVISIBLE);
-                            progressView.setVisibility(View.INVISIBLE);
-                            if(object.getString("success").equals("1")) {
-                                Toast.makeText(Documents.this, "Document Added Successfully", Toast.LENGTH_SHORT).show();
-                            }
-                            else {
-                                Toast.makeText(Documents.this, "Document Not Added", Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        //Log.d("err",String.valueOf(error));
-                        progressView.stopAnimation();
-                        progressView.setVisibility(View.INVISIBLE);
-                        Toast.makeText(Documents.this, "Error please check your network connection and try again later", Toast.LENGTH_SHORT).show();
-                    }
-                }) {
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        HashMap<String, String> params = new HashMap<String, String>();
-                        params.put("userid", sharedPreferences.getString("userid",null));
-                        params.put("bankid", sharedPreferences.getString("bankid",null));
-                        params.put("accountnumber", sharedPreferences.getString("accountnumber",null));
-                        params.put("type", "1");
-                        params.put("documentid", "1");
-                        return params;
-//                        return super.getParams();
-                    }
-                };
-                VolleySingleton.getInstance().getRequestQueue().add(stringRequest);
-
-          }
-        });
-
-        oldpan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
     }
 }

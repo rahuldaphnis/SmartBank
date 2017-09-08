@@ -19,11 +19,6 @@
             android:hint="Name"
             android:layout_height="wrap_content" />
         <EditText
-            android:id="@+id/phone"
-            android:layout_width="match_parent"
-            android:hint="Phone"
-            android:layout_height="wrap_content" />
-        <EditText
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:hint="Email"
@@ -38,6 +33,8 @@
             android:text="Save Profile"
             android:background="@color/com_facebook_button_background_color_selected"
             android:textColor="@color/cardview_light_background"
+            android:onClick="saveProfile"
+            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>

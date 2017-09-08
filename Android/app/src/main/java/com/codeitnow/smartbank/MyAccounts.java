@@ -48,6 +48,17 @@ public class MyAccounts extends AppCompatActivity {
         adddatatoview();
     }
 
+    @Override
+    public void onBackPressed() {
+        this.finish();
+        startActivity(new Intent(MyAccounts.this,Choice.class));
+    }
+
+    public void addNewAccount(View view) {
+        this.finish();
+        startActivity(new Intent(MyAccounts.this,SelectBank.class));
+    }
+
     private void adddatatoview()
     {
         final CircularProgressView progressView = (CircularProgressView) findViewById(R.id.progress_view);
@@ -106,7 +117,7 @@ public class MyAccounts extends AppCompatActivity {
     public void initialize() {
         empty = (TextView) findViewById(R.id.empty);
         empty.setVisibility(View.GONE);
-        addedaccounts = (RecyclerView) findViewById(R.id.reportedchilds);
+        addedaccounts = (RecyclerView) findViewById(R.id.accountsList);
         addedaccounts.setHasFixedSize(true);
         addedaccounts.setLayoutManager(new LinearLayoutManager(this));
         userAccountArrayList = new ArrayList<>();

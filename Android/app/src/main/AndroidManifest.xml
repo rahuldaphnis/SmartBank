@@ -6,8 +6,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".SmartBankUtilities.MyApplication"
@@ -42,8 +40,7 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
-        <activity android:name=".MainActivity">
-        </activity>
+        <activity android:name=".MainActivity" />
         <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -55,8 +52,14 @@
         <activity android:name=".MyAccounts" />
         <activity android:name=".Profile" />
         <activity android:name=".AccountMenu" />
-        <activity android:name=".PassBook" />
-        <activity android:name=".Documents"></activity>
+        <activity android:name=".PassBookActivity" />
+        <activity android:name=".Documents" />
+        <activity android:name=".AccountActivity" />
+        <activity android:name=".AddDocument" />
+        <activity android:name=".AddAccount" />
+        <activity android:name=".SelectBank" />
+        <activity android:name=".ChooseDocument" />
+        <activity android:name=".ViewDocument"></activity>
     </application>
 
 </manifest>

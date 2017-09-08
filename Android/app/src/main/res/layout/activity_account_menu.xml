@@ -12,10 +12,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="5dp"
             android:layout_weight="0.5"
             android:weightSum="1"
             android:orientation="horizontal">
@@ -30,6 +33,7 @@
                     android:textSize="20sp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:onClick="openPassbook"
                     android:background="@color/com_facebook_button_background_color_selected"
                     android:textColor="@color/cardview_light_background" />
             </LinearLayout>
@@ -43,6 +47,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="Documents"
+                    android:onClick="openDocuments"
                     android:textSize="20sp"
                     android:background="@color/com_facebook_button_background_color_selected"
                     android:textColor="@color/cardview_light_background" />
@@ -50,17 +55,41 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_marginTop="10dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.5">
-            <Button
-                android:id="@+id/removeaccount"
-                android:text="Remove Account"
-                android:textSize="30sp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="0.5"
+            android:weightSum="1"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_marginRight="5dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5">
+                <Button
+                    android:id="@+id/goBack"
+                    android:text="Go back \n\n Or \n\n Select Another Account"
+                    android:textSize="20sp"
+                    android:onClick="goBack"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/com_facebook_button_background_color_selected"
+                    android:textColor="@color/cardview_light_background" />
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/com_facebook_button_background_color_selected"
-                android:textColor="@color/cardview_light_background" />
+                android:layout_marginLeft="5dp"
+                android:layout_weight="0.5">
+                <Button
+                    android:id="@+id/removeAccount"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Remove this Account"
+                    android:textSize="20sp"
+                    android:onClick="removeAccount"
+                    android:background="@color/com_facebook_button_background_color_selected"
+                    android:textColor="@color/cardview_light_background" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

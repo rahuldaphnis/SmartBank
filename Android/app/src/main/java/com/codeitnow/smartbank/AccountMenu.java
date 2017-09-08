@@ -8,7 +8,6 @@ import android.widget.Button;
 
 public class AccountMenu extends AppCompatActivity {
 
-    Button passbook, documents, removeaccount;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,24 +16,32 @@ public class AccountMenu extends AppCompatActivity {
     }
 
     private void initialize() {
-        passbook = (Button) findViewById(R.id.passbook);
-        documents = (Button) findViewById(R.id.documents);
-        removeaccount = (Button) findViewById(R.id.removeaccount);
 
-        passbook.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(AccountMenu.this, PassBook.class));
-            }
-        });
-
-        documents.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(AccountMenu.this,Documents.class));
-            }
-        });
     }
 
+    public void openPassbook(View view) {
+
+        this.finish();
+        startActivity(new Intent(AccountMenu.this, PassBookActivity.class));
+    }
+
+    public void openDocuments(View view) {
+
+        this.finish();
+        startActivity(new Intent(AccountMenu.this,Documents.class));
+
+    }
+
+    public void goBack(View view) {
+
+        this.finish();
+        startActivity(new Intent(AccountMenu.this,MyAccounts.class));
+    }
+
+    public void removeAccount(View view) {
+
+        this.finish();
+        startActivity(new Intent(AccountMenu.this,MyAccounts.class));
+    }
 
 }
